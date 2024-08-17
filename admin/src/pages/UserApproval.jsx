@@ -23,6 +23,7 @@ const UserApproval = () => {
           },
         });
         setUsers(response.data);
+        setError(""); // Clear error if fetch is successful
       } catch (error) {
         setError("Failed to fetch users.");
       }
@@ -81,22 +82,40 @@ const UserApproval = () => {
     }
   };
 
+  const handleLoginRedirect = () => {
+    window.location.href = "http://localhost:5173/login";
+  };
+
+  const handleDashboardRedirect = () => {
+    window.location.href = "http://localhost:5173/dashboard";
+  };
+
   return (
     <div className="user-approval-container">
+      <button onClick={handleDashboardRedirect} className="dashboard-button">
+        Go to Dashboard
+      </button>
       <h1>User Approval</h1>
-      {error && <p className="error">{error}</p>}
+      {error && (
+        <div>
+          <p className="error">{error}</p>
+          {error === "Unauthorized: Please log in as admin." && (
+            <button onClick={handleLoginRedirect}>Go to Login</button>
+          )}
+        </div>
+      )}
       {success && <p className="success">{success}</p>}
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.length > 0 ? (
-            users.map((user) => (
+      {users.length > 0 && (
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {users.map((user) => (
               <tr key={user._id}>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
@@ -107,14 +126,11 @@ const UserApproval = () => {
                   <button onClick={() => handleReject(user._id)}>Reject</button>
                 </td>
               </tr>
-            ))
-          ) : (
-            <tr>
-              <td colSpan="3">No pending users.</td>
-            </tr>
-          )}
-        </tbody>
-      </table>
+            ))}
+          </tbody>
+        </table>
+      )}
+      {users.length === 0 && !error && <p>No pending users.</p>}
     </div>
   );
 };

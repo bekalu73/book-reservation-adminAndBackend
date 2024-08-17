@@ -47,8 +47,24 @@ const BookRegistration = () => {
     }
   };
 
+  const handleDashboardRedirect = () => {
+    navigate("/dashboard");
+  };
+
+  const handleLoginRedirect = () => {
+    navigate("/login");
+  };
+
   return (
     <div className="book-registration-container">
+      <div className="navigation-buttons">
+        <button onClick={handleDashboardRedirect} className="dashboard-button">
+          Go to Dashboard
+        </button>
+        <button onClick={handleLoginRedirect} className="login-button">
+          Go to Login
+        </button>
+      </div>
       <h2>Book Registration</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">

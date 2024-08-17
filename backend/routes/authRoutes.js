@@ -6,11 +6,17 @@ const {
   getPendingUsers,
   approveUser,
   rejectUser,
+  userEdit,
+  getUsers,
+  getUserById,
 } = require("../controllers/authController");
 const authMiddleware = require("../middleware/authMiddleware");
 
 router.post("/register", register);
 router.post("/login", login);
+router.put("/edit/:id", userEdit);
+router.get("/users", getUsers);
+router.get("/user/:id", getUserById);
 router.get(
   "/pending",
   authMiddleware.isAuthenticated,
